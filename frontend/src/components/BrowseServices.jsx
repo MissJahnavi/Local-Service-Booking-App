@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import DatePicker from 'react-multi-date-picker';
 import axios from 'axios';
+import api from '../api';
+// import { BASE_URL } from '../api';
 
 const BrowseServices = () => {
   const [search, setSearch] = useState('');
@@ -12,7 +14,7 @@ const BrowseServices = () => {
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/userDashboard/getServices', {
+        const res = await api.get('/userDashboard/getServices', {
           withCredentials: true,
         });
         setservicesData(res.data);
@@ -40,29 +42,27 @@ const BrowseServices = () => {
     }
 
     try {
-      const res = await fetch('http://localhost:5000/services/book', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-        body: JSON.stringify({
+      const res = await api.post(
+        '/services/book',
+        {
           serviceName,
-          bookingDate: selectedService?.date,
-          timeSlot: selectedService?.time,
+          bookingDate: selectedService.date,
+          timeSlot: selectedService.time,
           notes: '',
-        }),
-      });
+        },
+        {
+          withCredentials: true, 
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
 
-      const data = await res.json();
-      if (res.ok) {
-        alert('Booking successful!');
-      } else {
-        alert('Booking failed: ' + data.message);
-      }
+      alert('Booking successful!');
     } catch (err) {
       console.error('Booking error', err);
-      alert('An error occurred during booking.');
+      const message = err.response?.data?.message || 'An error occurred during booking.';
+      alert('Booking failed: ' + message);
     }
   };
 
@@ -86,8 +86,10 @@ const BrowseServices = () => {
     }));
   };
 
+  const BASE_URL="http://localhost:5000"
+
   const getImagePath = (serviceName) => {
-    return `http://localhost:5000/images/${serviceName.toLowerCase()}.jpg`;
+    return `${BASE_URL}/images/${serviceName.toLowerCase()}.jpg`;
   };
 
   return (

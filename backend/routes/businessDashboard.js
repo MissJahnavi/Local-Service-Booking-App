@@ -7,14 +7,6 @@ const User = require('../models/user')
 const businessOnlyMiddleware = require('../middlewares/businessOnlyMiddleware');
 const authMiddleware = require('../middlewares/auth');
 
-//Features: 1. Get services
-//          2.My Services
-
-// Add New Service
-// Booking Calendar View
-// Availability Settings
-// Appointment Requests (Accept/Reject)
-
 const router = express.Router();
 
 router.get('/my-services', authMiddleware, businessOnlyMiddleware, async (req, res) => {

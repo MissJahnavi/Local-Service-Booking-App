@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from "react-router-dom";
 import axios from 'axios';
+import api from '../api';
 import { useState } from 'react';
 
 const Signin = () => {
@@ -10,8 +11,9 @@ const Signin = () => {
     e.preventDefault();
     try {
       console.log("formData before login:", formData);
+      
 
-      const res=await axios.post('http://localhost:5000/user/signin',formData,{withCredentials:true});
+      const res=await api.post('/user/signin',formData,{withCredentials:true});
       const {token,user}=res.data;
       localStorage.setItem('token', token); 
       localStorage.setItem('user', JSON.stringify(user)); 

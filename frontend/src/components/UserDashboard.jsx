@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import api from '../api';
 import DatePicker from 'react-multi-date-picker'
 
 
@@ -20,7 +21,7 @@ const UserDashboard = () => {
     useEffect(() => {
         const fetchBookings = async () => {
             try {
-                const res = await axios.get('http://localhost:5000/userDashboard/getBookings', { withCredentials: true });
+                const res = await api.get('/userDashboard/getBookings', { withCredentials: true });
                 setbookings({
                     upcoming: res.data.upcoming || [],
                     past: res.data.past || []
@@ -43,7 +44,7 @@ const UserDashboard = () => {
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                const res = await axios.get('http://localhost:5000/userDashboard/profile', {
+                const res = await api.get('/userDashboard/profile', {
                     withCredentials: true
                 })
                 setuser(res.data)
@@ -59,8 +60,8 @@ const UserDashboard = () => {
     const handleProfileSubmit = async (e) => {
         e.preventDefault();
         try {
-            const res = await axios.put(
-                'http://localhost:5000/userDashboard/profile',
+            const res = await api.put(
+                '/userDashboard/profile',
                 {
                     email: user.email,
                     phone: user.phone,
@@ -90,7 +91,7 @@ const UserDashboard = () => {
             const jsDate = newDate?.toDate?.() || newDate;
             const isoDate = jsDate.toISOString().split("T")[0];
 
-            const res = await axios.put(`http://localhost:5000/userDashboard/booking/${booking._id}`, {
+            const res = await api.put(`/userDashboard/booking/${booking._id}`, {
                 serviceName: booking.service.serviceName,
                 newBookingDate: isoDate,
                 newTimeSlot: newTime,
@@ -108,7 +109,7 @@ const UserDashboard = () => {
             setShowRescheduleForm(false);
             alert('Rescheduled successfully!');
             // window.href = '/userDashboard'
-            const refreshed = await axios.get('http://localhost:5000/userDashboard/getBookings', {
+            const refreshed = await api.get('/userDashboard/getBookings', {
                 withCredentials: true
             });
             setbookings({
@@ -126,7 +127,7 @@ const UserDashboard = () => {
         if (!confirmCancel) return;
         try {
             const token = localStorage.getItem('token');
-            await axios.delete(`http://localhost:5000/userDashboard/booking/${bookingId}`, {
+            await api.delete(`/userDashboard/booking/${bookingId}`, {
                 withCredentials: true
             });
 
@@ -145,13 +146,13 @@ const UserDashboard = () => {
     const handleLogout = async (e) => {
         e.preventDefault();
         try {
-            const res = await axios.post('http://localhost:5000/user/logout', {}, { withCredentials: true });
+            const res = await api.post('/user/logout', {}, { withCredentials: true });
             alert('Logged out successfully!');
         } catch (error) {
             console.error('Error logging out', error);
             alert('Failed to logout');
         } finally {
-            // Clear local state or tokens if stored elsewhere
+           
             localStorage.clear();
             sessionStorage.clear();
             window.location.href = '/'
@@ -255,7 +256,7 @@ const UserDashboard = () => {
                                 </div>
                             </div>
                         ) : (
-                            // Edit Mode
+                            
                             <div>
                                 <h2 className="text-2xl font-semibold mb-4">Edit Profile</h2>
                                 <form onSubmit={(e) => {

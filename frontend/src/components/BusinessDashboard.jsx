@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import CalendarView from './CalendarView';
 import DatePicker from 'react-multi-date-picker'
 import axios from 'axios';
+import api from '../api';
 
 const BusinessDashboard = () => {
     const [activeTab, setActiveTab] = useState('services');
@@ -29,7 +30,7 @@ const BusinessDashboard = () => {
     const fetchServices = async () => {
         try {
 
-            const res = await axios.get('http://localhost:5000/businessDashboard/my-services', { withCredentials: true })
+            const res = await api.get('/businessDashboard/my-services', { withCredentials: true })
 
             setservices(res.data);
 
@@ -41,7 +42,7 @@ const BusinessDashboard = () => {
 
     const fetchBookings = async () => {
         try {
-            const res = await axios.get('http://localhost:5000/businessDashboard/request', {
+            const res = await api.get('/businessDashboard/request', {
                 withCredentials: true,
             });
             // console.log("Raw bookings response:", res.data);
@@ -78,8 +79,8 @@ const BusinessDashboard = () => {
                     image: newService.image, 
                 };
 
-                await axios.patch(
-                    `http://localhost:5000/businessDashboard/service/${editingServiceId}`,
+                await api.patch(
+                    `/businessDashboard/service/${editingServiceId}`,
                     updatedService,
                     {
                         withCredentials: true,
@@ -91,7 +92,7 @@ const BusinessDashboard = () => {
                 alert('Service updated');
             }
             else {
-                const res = await axios.post('http://localhost:5000/businessDashboard/postServices', newService, { withCredentials: true })
+                const res = await api.post('/businessDashboard/postServices', newService, { withCredentials: true })
                 alert('Service added');
                 setservices([...services, res.data]);
                 setnewService({ serviceName: '', category: '', price: '', description: '', location: '', image: '' });
@@ -125,7 +126,7 @@ const BusinessDashboard = () => {
     const handleDelete = async (id) => {
         if (!window.confirm('Delete this service permanently?')) return;
         try {
-            await axios.delete(`http://localhost:5000/businessDashboard/delete-service/${id}`, {
+            await api.delete(`/businessDashboard/delete-service/${id}`, {
                 withCredentials: true,
             });
             setservices((prev) => prev.filter((s) => s._id !== id));
@@ -137,7 +138,7 @@ const BusinessDashboard = () => {
 
     const handleAccept = async (bookingId) => {
         try {
-            await axios.put(`http://localhost:5000/businessDashboard/requests/${bookingId}/accept`, {}, { withCredentials: true })
+            await api.put(`/businessDashboard/requests/${bookingId}/accept`, {}, { withCredentials: true })
             alert('Booking Accepted')
             fetchBookings();
         } catch (error) {
@@ -149,7 +150,7 @@ const BusinessDashboard = () => {
 
     const handleReject = async (bookingId) => {
         try {
-            await axios.put(`http://localhost:5000/businessDashboard/requests/${bookingId}/reject`, {}, { withCredentials: true })
+            await api.put(`/businessDashboard/requests/${bookingId}/reject`, {}, { withCredentials: true })
             alert('Booking Rejected')
 
             fetchBookings();
@@ -181,7 +182,7 @@ const BusinessDashboard = () => {
                 workingDays: availability.workingDays,
                 holidays: holidayDates.map(date => new Date(date).toISOString())
             }
-            const res = await axios.post('http://localhost:5000/businessDashboard/availability', dataToSend, { withCredentials: true })
+            const res = await api.post('/businessDashboard/availability', dataToSend, { withCredentials: true })
 
             // setAvailability(res.data)
             alert('Availability saved!');
@@ -192,7 +193,7 @@ const BusinessDashboard = () => {
 
     const fetchAvailability = async () => {
         try {
-            const res = await axios.get('http://localhost:5000/businessDashboard/availability', {
+            const res = await api.get('/businessDashboard/availability', {
                 withCredentials: true,
             });
             if (res.data) setAvailability(res.data);
@@ -204,7 +205,7 @@ const BusinessDashboard = () => {
     const handleLogout = async (e) => {
         e.preventDefault();
         try {
-            const res = await axios.post('http://localhost:5000/user/logout', {}, { withCredentials: true });
+            const res = await api.post('/user/logout', {}, { withCredentials: true });
             alert('Logged out successfully!');
         } catch (error) {
             console.error('Error logging out', error);

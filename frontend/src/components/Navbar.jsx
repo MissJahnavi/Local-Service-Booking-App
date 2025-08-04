@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Menu, X } from 'lucide-react';
-import UserBookingsTab from './UserBookingsTab';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -10,12 +10,12 @@ export default function Navbar() {
     name: '',
   });
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     const token = localStorage.getItem('token');
     const userData = localStorage.getItem('user');
-    JSON.parse(localStorage.getItem('user'))
-
-
+    JSON.parse(localStorage.getItem('user'));
 
     if (token && userData) {
       try {
@@ -34,36 +34,33 @@ export default function Navbar() {
   const handleLogout = () => {
     localStorage.clear();
     setUser({ isLoggedIn: false, role: null, name: '' });
+    navigate('/');
   };
 
   return (
     <header className="bg-white shadow-md sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-        <div className="text-xl font-bold">LocalServices</div>
+        <div className="text-xl font-bold">
+          <Link to="/">LocalServices</Link>
+        </div>
 
         <nav className="hidden md:flex space-x-6">
-          <a href="/">Home</a>
-          <a href="/browseServices">Services</a>
-          {/* {user.isLoggedIn && <a href="/bookings">Bookings</a>} */}
+          <Link to="/">Home</Link>
+          <Link to="/browseServices">Services</Link>
           {user.role === 'user' && (
             <>
-              <a href="/userBookings">My Bookings</a>
-              <a href="/userDashboard">Dashboard</a>
+              <Link to="/userBookings">My Bookings</Link>
+              <Link to="/userDashboard">Dashboard</Link>
             </>
-          )
-
-          }
+          )}
           {user.role === 'business' && (
             <>
-              <a href="/businessDashboard">Dashboard</a>
-              {/* <a href="/browseServices">My Services</a> */}
-              {/* <a href="/availability">Availability</a> */}
+              <Link to="/businessDashboard">Dashboard</Link>
             </>
           )}
           {user.role === 'admin' && (
             <>
-              <a href="/adminDashboard">Dashboard</a>
-
+              <Link to="/adminDashboard">Dashboard</Link>
             </>
           )}
         </nav>
@@ -71,8 +68,8 @@ export default function Navbar() {
         <div className="hidden md:flex space-x-4">
           {!user.isLoggedIn ? (
             <>
-              <a href="/signin" className="text-sm hover:text-blue-600 px-4 py-2 ">Sign In</a>
-              <a href="/signup" className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded text-sm">Register</a>
+              <Link to="/signin" className="text-sm hover:text-blue-600 px-4 py-2">Sign In</Link>
+              <Link to="/signup" className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded text-sm">Register</Link>
             </>
           ) : (
             <>
@@ -87,7 +84,6 @@ export default function Navbar() {
         </button>
       </div>
 
-      {/* Mobile menu omitted for brevity — same logic applies */}
     </header>
   );
 }

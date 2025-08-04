@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from './Navbar';
 import axios from 'axios';
+import api from '../api';
 
 
 export default function Home() {
@@ -12,7 +13,7 @@ export default function Home() {
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/getServices', {
+        const res = await api.get('/ser/getServices', {
           withCredentials: true,
         });
         setservicesData(res.data);
@@ -32,6 +33,7 @@ export default function Home() {
     return matchesSearch;
   });
 
+  const BASE_URL="http://localhost:5000"
   return (
     <div className="w-full min-h-screen bg-gray-50 text-gray-800">
 
@@ -74,7 +76,7 @@ export default function Home() {
             {filteredServices.map((service, index) => (
               <div key={index} className="bg-white border hover:border-blue-500 p-4 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 text-center group">
                 <img
-                  src={`http://localhost:5000/images/${service.serviceName.toLowerCase()}.jpg`}
+                  src={`${BASE_URL}/images/${service.serviceName.toLowerCase()}.jpg`}
 
                   alt={service.serviceName}
                   className="w-full h-40 object-cover rounded-md mb-3"

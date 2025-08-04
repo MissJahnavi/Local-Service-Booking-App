@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Tab, Tabs } from './Tab';
 import { Card, CardContent } from './Card';
 import { Button } from './Button';
+import api from '../api';
 
 const AdminDashboard = () => {
   const [users, setUsers] = useState([]);
@@ -13,19 +14,19 @@ const AdminDashboard = () => {
   const [summary, setSummary] = useState();
 
   const token = localStorage.getItem('token');
-  console.log(token)
+  // console.log(token)
   localStorage.setItem('token', token);
 
 
   const fetchData = async () => {
     try {
       const [userRes, serviceRes, bookingRes, reportSummaryRes, reportRes] = await Promise.all([
-        axios.get('http://localhost:5000/admin/users', { withCredentials: true }),
-        axios.get('http://localhost:5000/admin/service', { withCredentials: true }),
-        axios.get('http://localhost:5000/admin/bookings', { withCredentials: true }),
+        api.get('/admin/users', { withCredentials: true }),
+        api.get('/admin/service', { withCredentials: true }),
+        api.get('/admin/bookings', { withCredentials: true }),
         // axios.get('/admin/payments', config),
-        axios.get('http://localhost:5000/admin/report/summary', { withCredentials: true }),
-        axios.get('http://localhost:5000/admin/report/monthly', { withCredentials: true }),
+        api.get('/admin/report/summary', { withCredentials: true }),
+        api.get('/admin/report/monthly', { withCredentials: true }),
       ]);
 
       console.log('User API response:', userRes.data);
@@ -44,7 +45,7 @@ const AdminDashboard = () => {
 
   const updateUserRole = async (id, role) => {
     try {
-      await axios.patch(`http://localhost:5000/admin/user/${id}`, { role }, { withCredentials: true });
+      await api.patch(`/admin/user/${id}`, { role }, { withCredentials: true });
       fetchData();
     } catch (err) {
       console.error('Failed to update role:', err);
@@ -53,7 +54,7 @@ const AdminDashboard = () => {
 
   const deleteUser = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/admin/user/${id}`, { withCredentials: true });
+      await api.delete(`/admin/user/${id}`, { withCredentials: true });
       fetchData();
     } catch (err) {
       console.error('Failed to delete user:', err);
@@ -62,7 +63,7 @@ const AdminDashboard = () => {
 
   const deleteService = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/admin/service/${id}`, { withCredentials: true });
+      await api.delete(`/admin/service/${id}`, { withCredentials: true });
       fetchData();
     } catch (err) {
       console.error('Failed to delete service:', err);

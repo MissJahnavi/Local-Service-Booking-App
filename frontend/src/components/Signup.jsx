@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from "react-router-dom";
 import axios from 'axios';
+import api from '../api';
 import { useState } from 'react';
 
 const Signup = () => {
@@ -14,7 +15,7 @@ const Signup = () => {
     const handleSignup = async (e) => {
         e.preventDefault();
         try {
-            const res = await axios.post('http://localhost:5000/user/signup', formData)
+            const res = await api.post('/user/signup', formData)
             alert("Signup successfull")
             window.location.href = '/';
         } catch (error) {
