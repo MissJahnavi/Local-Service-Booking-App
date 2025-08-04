@@ -170,13 +170,13 @@ const Signup = () => {
                                             </div>
                                         </div>
 
-                                        <div className="flex items-center">
+                                        {/* <div className="flex items-center">
                                             <input type="checkbox" name="agree" id="agree" className="w-5 h-5 text-green-500 bg-white border-gray-200 rounded" defaultChecked />
 
                                             <label htmlFor="agree" className="ml-3 text-sm font-medium text-gray-500">
                                                 I agree to Postcraft’s <a href="#" title="" className="text-blue-600 hover:text-blue-700 hover:underline">Terms of Service</a> and <a href="#" title="" className="text-blue-600 hover:text-blue-700 hover:underline">Privacy Policy</a>
                                             </label>
-                                        </div>
+                                        </div> */}
 
                                         <div>
                                             <button type="submit" className="inline-flex items-center justify-center w-full px-4 py-4 text-base font-semibold text-white transition-all duration-200 bg-blue-600 border border-transparent rounded-md focus:outline-none hover:bg-blue-700 focus:bg-blue-700">

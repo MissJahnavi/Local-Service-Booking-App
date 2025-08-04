@@ -8,7 +8,7 @@ const User = require('../models/user')
 const router = express.Router();
 
 
-router.get('/getServices', async (req, res) => {
+router.get('/getServices',authMiddleware, async (req, res) => {
 
     try {
         const services = await Service.find();

@@ -47,6 +47,7 @@ export default function Navbar() {
         <nav className="hidden md:flex space-x-6">
           <Link to="/">Home</Link>
           <Link to="/browseServices">Services</Link>
+          
           {user.role === 'user' && (
             <>
               <Link to="/userBookings">My Bookings</Link>

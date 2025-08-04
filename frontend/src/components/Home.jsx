@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Navbar from './Navbar';
 import axios from 'axios';
 import api from '../api';
+import { BASE_URL ,IMAGE_BASE_URL} from '../api';
 
 
 export default function Home() {
@@ -13,7 +14,7 @@ export default function Home() {
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        const res = await api.get('/ser/getServices', {
+        const res = await api.get('/getServices', {
           withCredentials: true,
         });
         setservicesData(res.data);
@@ -33,7 +34,8 @@ export default function Home() {
     return matchesSearch;
   });
 
-  const BASE_URL="http://localhost:5000"
+  // const BASE_URL="http://localhost:5000" 
+  // we have to use dynamic path here too
   return (
     <div className="w-full min-h-screen bg-gray-50 text-gray-800">
 
@@ -76,7 +78,7 @@ export default function Home() {
             {filteredServices.map((service, index) => (
               <div key={index} className="bg-white border hover:border-blue-500 p-4 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 text-center group">
                 <img
-                  src={`${BASE_URL}/images/${service.serviceName.toLowerCase()}.jpg`}
+                  src={`${IMAGE_BASE_URL}/images/${service.serviceName.toLowerCase()}.jpg`}
 
                   alt={service.serviceName}
                   className="w-full h-40 object-cover rounded-md mb-3"

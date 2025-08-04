@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import DatePicker from 'react-multi-date-picker';
 import axios from 'axios';
 import api from '../api';
-// import { BASE_URL } from '../api';
+import { BASE_URL , IMAGE_BASE_URL} from '../api';
 
 const BrowseServices = () => {
   const [search, setSearch] = useState('');
@@ -86,10 +86,10 @@ const BrowseServices = () => {
     }));
   };
 
-  const BASE_URL="http://localhost:5000"
+  // const BASE_URL="http://localhost:5000"
 
   const getImagePath = (serviceName) => {
-    return `${BASE_URL}/images/${serviceName.toLowerCase()}.jpg`;
+    return `${IMAGE_BASE_URL}/images/${serviceName.toLowerCase()}.jpg`;
   };
 
   return (
