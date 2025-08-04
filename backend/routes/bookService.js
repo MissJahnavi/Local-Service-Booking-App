@@ -1,6 +1,5 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const services = require('../MOCK_DATA.json')
 const authMiddleware = require('../middlewares/auth');
 const Service = require('../models/service')
 const Booking = require('../models/booking')
@@ -9,9 +8,15 @@ const User = require('../models/user')
 const router = express.Router();
 
 
-router.get('/getServices',authMiddleware, (req, res) => {
-    // console.log(services)
-    return res.json(services)
+router.get('/getServices', async (req, res) => {
+
+    try {
+        const services = await Service.find();
+        return res.status(200).json(services);
+    } catch (error) {
+        console.error('Error fetching services:', error);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
 })
 
 //Booking by user
